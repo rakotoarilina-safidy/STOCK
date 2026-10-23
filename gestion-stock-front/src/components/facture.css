@@ -1,0 +1,95 @@
+/* ---------- Boutons de la page « Vente enregistrée » ---------- */
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-secondaire {
+  background: #fff;
+  color: var(--bleu);
+  border: 1px solid var(--bleu);
+}
+
+.btn-secondaire:hover:not(:disabled) {
+  background: #eff6ff;
+}
+
+/* ---------- Ticket : invisible à l'écran ---------- */
+#zone-impression {
+  display: none;
+}
+
+.ticket {
+  width: 72mm;
+  margin: 0 auto;
+  padding: 3mm 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #000;
+  background: #fff;
+}
+
+.t-centre {
+  text-align: center;
+}
+
+.t-gras {
+  font-weight: 700;
+}
+
+.t-grand {
+  font-size: 15px;
+}
+
+.t-petit {
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.t-trait {
+  border-top: 1px dashed #000;
+  margin: 6px 0;
+}
+
+.t-ligne {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.t-article {
+  margin-bottom: 4px;
+}
+
+/* ---------- À l'impression : seulement le ticket ---------- */
+@media print {
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    background: #fff !important;
+  }
+
+  #root {
+    display: none !important;
+  }
+
+  #zone-impression {
+    display: block;
+  }
+
+  /* Chaque exemplaire sur sa propre page : l'imprimante coupe entre les deux */
+  .ticket {
+    break-after: page;
+  }
+
+  .ticket:last-child {
+    break-after: auto;
+  }
+}

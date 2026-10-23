@@ -1,0 +1,196 @@
+:root {
+  --bleu: #1d4ed8;
+  --bleu-fonce: #1e3a8a;
+  --fond: #f3f4f6;
+  --carte: #ffffff;
+  --texte: #111827;
+  --gris: #6b7280;
+  --bordure: #e5e7eb;
+  --rouge: #b91c1c;
+  --rouge-fond: #fee2e2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  background: var(--fond);
+  color: var(--texte);
+  font-size: 15px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.muted {
+  color: var(--gris);
+  font-size: 14px;
+}
+
+/* ---------- Cartes, champs, boutons ---------- */
+.carte {
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--texte);
+}
+
+input:focus {
+  outline: 2px solid var(--bleu);
+  outline-offset: 0;
+  border-color: var(--bleu);
+}
+
+.btn {
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: var(--bleu);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--bleu-fonce);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-clair {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  width: 100%;
+}
+
+.btn-clair:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.erreur {
+  background: var(--rouge-fond);
+  color: var(--rouge);
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+/* ---------- Connexion ---------- */
+.login-page {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.login-carte {
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-carte .btn {
+  width: 100%;
+}
+
+/* ---------- Mise en page principale ---------- */
+.app {
+  display: flex;
+  height: 100%;
+}
+
+.menu {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--bleu-fonce);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+}
+
+.menu-titre {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 4px 10px 18px;
+}
+
+.menu nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.lien {
+  color: #dbeafe;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.lien:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lien.actif {
+  background: var(--bleu);
+  color: #fff;
+  font-weight: 600;
+}
+
+.menu-bas {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 12px;
+}
+
+.menu-user {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px 10px;
+}
+
+.menu-user .muted {
+  color: #bfdbfe;
+}
+
+.contenu {
+  flex: 1;
+  padding: 24px;
+  overflow: auto;
+}

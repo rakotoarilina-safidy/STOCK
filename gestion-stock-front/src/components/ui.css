@@ -1,0 +1,548 @@
+/* ---------- En-tête de page et onglets ---------- */
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.entete h1 {
+  margin: 0;
+}
+
+.onglets {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  flex-wrap: wrap;
+}
+
+.onglets button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gris);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.onglets button.actif {
+  background: #fff;
+  color: var(--bleu);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------- Barre d'outils ---------- */
+.barre {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.barre .pousse {
+  margin-left: auto;
+}
+
+.recherche-liste {
+  max-width: 320px;
+  margin: 0;
+}
+
+.barre input[type='date'] {
+  width: auto;
+  margin: 0;
+}
+
+input[type='checkbox'] {
+  display: inline-block;
+  width: auto;
+  margin: 0 6px 0 0;
+}
+
+label.coche {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* ---------- Cartes de chiffres ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+}
+
+.stat .muted {
+  font-size: 13px;
+}
+
+.stat strong {
+  font-size: 22px;
+}
+
+.stat.alerte strong {
+  color: var(--rouge);
+}
+
+/* ---------- Tableaux ---------- */
+.tableau-conteneur {
+  overflow: auto;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableau th {
+  position: sticky;
+  top: 0;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 13px;
+  color: var(--gris);
+  background: #f9fafb;
+  border-bottom: 1px solid var(--bordure);
+  white-space: nowrap;
+}
+
+.tableau td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--bordure);
+}
+
+.tableau tr:last-child td {
+  border-bottom: none;
+}
+
+.tableau tr.alerte td {
+  background: #fef2f2;
+}
+
+.tableau .nombre {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tableau .vide {
+  text-align: center;
+  color: var(--gris);
+  padding: 24px;
+}
+
+.actions-ligne {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--rouge-fond);
+  color: var(--rouge);
+}
+
+.plus {
+  color: #166534;
+  font-weight: 600;
+}
+
+.moins {
+  color: var(--rouge);
+  font-weight: 600;
+}
+
+/* ---------- Fenêtre modale et formulaires ---------- */
+.modal-fond {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(17, 24, 39, 0.5);
+}
+
+.modal {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.modal-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.modal-entete h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.grille-champs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 14px;
+}
+
+.grille-champs .large {
+  grid-column: 1 / -1;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.btn-secondaire {
+  background: #fff;
+  color: var(--bleu);
+  border: 1px solid var(--bleu);
+}
+
+.btn-secondaire:hover:not(:disabled) {
+  background: #eff6ff;
+}
+
+.aide {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--gris);
+}
+
+/* ---------- Fenêtre de confirmation ---------- */
+.message-confirmation {
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+.btn-danger {
+  background: var(--rouge);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #991b1b;
+}
+
+/* ---------- Listes déroulantes ---------- */
+select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-family: inherit;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--texte);
+}
+
+select:focus {
+  outline: 2px solid var(--bleu);
+  outline-offset: 0;
+  border-color: var(--bleu);
+}
+
+.filtre-select {
+  width: auto;
+  min-width: 220px;
+  margin: 0;
+}
+
+/* ---------- Message de réussite ---------- */
+.succes {
+  background: #dcfce7;
+  color: #166534;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+/* ---------- Fenêtre large (livraisons) ---------- */
+.modal.large {
+  max-width: 780px;
+}
+
+.recherche-article {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.recherche-article input {
+  margin-top: 0;
+}
+
+.propositions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.propositions button {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid var(--bordure);
+  background: #fff;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--texte);
+  cursor: pointer;
+}
+
+.propositions button:last-child {
+  border-bottom: none;
+}
+
+.propositions button:hover {
+  background: #eff6ff;
+}
+
+.champ-table {
+  width: 110px;
+  margin: 0;
+  padding: 6px 8px;
+  text-align: right;
+}
+
+.total-livraison {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 14px 0 6px;
+  font-size: 16px;
+}
+
+.total-livraison strong {
+  font-size: 22px;
+}
+
+/* ---------- Récapitulatif d'une facture ---------- */
+.resume-facture {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 14px 0 4px;
+}
+
+.resume-facture > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.resume-facture .gros {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ---------- Sections de page ---------- */
+.section {
+  margin-bottom: 18px;
+}
+
+.section h2 {
+  margin: 0 0 12px;
+  font-size: 17px;
+}
+
+.section h3 {
+  margin: 18px 0 10px;
+  font-size: 15px;
+}
+
+.section .entete {
+  margin-bottom: 4px;
+}
+
+.section .entete h2 {
+  margin: 0;
+}
+
+.deux-colonnes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.espace-haut {
+  margin-top: 16px;
+}
+
+.stat.benefice strong {
+  color: #166534;
+}
+
+@media (max-width: 900px) {
+  .deux-colonnes {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Histogramme ---------- */
+.histo-legende {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--gris);
+}
+
+.histo-legende i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+
+.histo-zone {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding-top: 22px;
+  overflow-x: auto;
+}
+
+.histo-col {
+  flex: 1;
+  min-width: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.histo-barres {
+  height: 190px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  border-bottom: 1px solid var(--bordure);
+}
+
+.histo-barre {
+  position: relative;
+  flex: 1;
+  max-width: 36px;
+  min-height: 2px;
+  border-radius: 4px 4px 0 0;
+}
+
+.histo-valeur {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 2px;
+  font-size: 11px;
+  color: var(--gris);
+  white-space: nowrap;
+}
+
+.histo-etiquette {
+  margin-top: 6px;
+  font-size: 11px;
+  text-align: center;
+  color: var(--gris);
+  white-space: nowrap;
+}
+
+/* ---------- Comptes utilisateurs ---------- */
+.etiquette {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #dbeafe;
+  color: var(--bleu-fonce);
+}
+
+.tableau tr.inactif td {
+  color: var(--gris);
+  background: #f9fafb;
+}
+
+/* ---------- Avertissement ---------- */
+.avertissement {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- Adresses du PC principal ---------- */
+.liste-adresses {
+  margin: 8px 0 12px;
+  padding-left: 20px;
+}
+
+.liste-adresses li {
+  margin-bottom: 6px;
+}
+
+code {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f3f4f6;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.liste-adresses code {
+  font-size: 17px;
+  font-weight: 600;
+  padding: 6px 10px;
+  background: #eff6ff;
+  color: var(--bleu-fonce);
+}
