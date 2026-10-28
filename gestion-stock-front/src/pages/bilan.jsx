@@ -85,10 +85,10 @@ export default function Bilan() {
 
   const series = voirBenefice
     ? [
-        { nom: 'Ventes', couleur: '#1d4ed8' },
-        { nom: 'Bénéfice', couleur: '#16a34a' },
+        { nom: 'Ventes', couleur: '#0f766e' },
+        { nom: 'Bénéfice', couleur: '#e8a317' },
       ]
-    : [{ nom: 'Ventes', couleur: '#1d4ed8' }];
+    : [{ nom: 'Ventes', couleur: '#0f766e' }];
 
   const donneesEvolution =
     evolution && evolution.groupe === groupe ? evolution.donnees : null;

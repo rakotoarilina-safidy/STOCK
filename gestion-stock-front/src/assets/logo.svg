@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MILIIH Shop">
+  <rect width="64" height="64" rx="15" fill="#0f766e"/>
+  <!-- auvent rayé -->
+  <path d="M14 12H23L20.5 27H9Z" fill="#f2a900"/>
+  <path d="M23 12H32V27H20.5Z" fill="#fff6dc"/>
+  <path d="M32 12H41L43.5 27H32Z" fill="#f2a900"/>
+  <path d="M41 12H50L55 27H43.5Z" fill="#fff6dc"/>
+  <!-- festons -->
+  <path d="M9 27H20.5A5.75 5.75 0 0 1 9 27Z" fill="#f2a900"/>
+  <path d="M20.5 27H32A5.75 5.75 0 0 1 20.5 27Z" fill="#fff6dc"/>
+  <path d="M32 27H43.5A5.75 5.75 0 0 1 32 27Z" fill="#f2a900"/>
+  <path d="M43.5 27H55A5.75 5.75 0 0 1 43.5 27Z" fill="#fff6dc"/>
+  <!-- lettre M -->
+  <path d="M20 53V39L32 47.5L44 39V53" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

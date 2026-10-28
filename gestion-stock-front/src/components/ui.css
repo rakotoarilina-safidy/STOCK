@@ -235,7 +235,7 @@ label.coche {
 }
 
 .btn-secondaire:hover:not(:disabled) {
-  background: #eff6ff;
+  background: #e6f2ef;
 }
 
 .aide {
@@ -341,7 +341,7 @@ select:focus {
 }
 
 .propositions button:hover {
-  background: #eff6ff;
+  background: #e6f2ef;
 }
 
 .champ-table {
@@ -501,7 +501,7 @@ select:focus {
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  background: #dbeafe;
+  background: #d3ebe6;
   color: var(--bleu-fonce);
 }
 
@@ -543,6 +543,345 @@ code {
   font-size: 17px;
   font-weight: 600;
   padding: 6px 10px;
-  background: #eff6ff;
+  background: #e6f2ef;
   color: var(--bleu-fonce);
+}
+
+/* ---------- Caisse ---------- */
+.date-longue {
+  margin: 0 0 14px;
+  text-transform: capitalize;
+}
+
+.jour-long {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: var(--bleu-fonce);
+}
+
+.compte-ligne {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px dashed var(--bordure);
+}
+
+.compte-ligne small {
+  color: var(--gris);
+}
+
+.compte-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 12px 0 4px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #e3f1ee;
+  color: var(--bleu-fonce);
+  font-weight: 600;
+}
+
+.compte-total strong {
+  font-family: var(--police-titre);
+  font-size: 24px;
+}
+
+.ecart {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 14px 0 6px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.ecart-manque {
+  background: var(--rouge-fond);
+  color: var(--rouge);
+}
+
+.ecart-surplus {
+  background: #fff3d6;
+  color: #8a5a00;
+}
+
+.ecart-detail {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.ecart-pastille {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ecart-pastille.ecart-juste {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.verdict {
+  margin: -6px 0 14px;
+}
+
+.puces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -4px 0 14px;
+}
+
+.puce {
+  padding: 5px 12px;
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--gris);
+  font: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.puce:hover {
+  border-color: var(--bleu);
+  color: var(--bleu-fonce);
+}
+
+.titre-icone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lien-simple {
+  color: var(--bleu);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.lien-simple:hover {
+  text-decoration: underline;
+}
+
+.caisse-resume {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.caisse-resume > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.caisse-resume strong {
+  font-size: 18px;
+}
+
+.caisse-resume .attendu strong {
+  color: var(--bleu-fonce);
+  font-family: var(--police-titre);
+  font-size: 22px;
+}
+
+.badge.sans-marge {
+  margin-left: 0;
+}
+
+/* ============================================================
+   Formulaires et fenêtres : habillage
+   ============================================================ */
+@keyframes entree-fenetre {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes entree-fond {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-fond {
+  background: rgba(13, 43, 40, 0.5);
+  backdrop-filter: blur(3px);
+  animation: entree-fond 0.18s ease-out;
+}
+
+.modal {
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(13, 43, 40, 0.3);
+  animation: entree-fenetre 0.22s ease-out;
+}
+
+.modal-entete {
+  margin: 0;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--bordure);
+  background: #f6faf9;
+  border-radius: 16px 16px 0 0;
+}
+
+.modal-entete h2 {
+  font-size: 19px;
+}
+
+.modal-corps {
+  padding: 22px 24px 24px;
+}
+
+.modal-actions {
+  margin: 22px -24px -24px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--bordure);
+  background: #f6faf9;
+  border-radius: 0 0 16px 16px;
+}
+
+.modal label {
+  margin-bottom: 16px;
+  font-size: 13.5px;
+  color: var(--texte);
+}
+
+.modal input:not([type='checkbox']),
+.modal select {
+  padding: 11px 13px;
+  border: 1.5px solid #c9d8d4;
+  border-radius: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.modal input:not([type='checkbox']):hover,
+.modal select:hover {
+  border-color: #9fb9b3;
+}
+
+.modal input:not([type='checkbox']):focus,
+.modal select:focus {
+  outline: none;
+  border-color: var(--bleu);
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.14);
+}
+
+.modal .aide {
+  margin: 6px 0 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f2f7f6;
+  line-height: 1.5;
+}
+
+.modal .compte-total {
+  margin-top: 4px;
+}
+
+/* Titre d'une partie du formulaire, avec un trait qui suit */
+.form-section-titre {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 14px;
+  font-family: var(--police-titre);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--bleu-fonce);
+}
+
+.form-section-titre::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--bordure);
+}
+
+.form-section-titre:not(:first-child) {
+  margin-top: 12px;
+}
+
+.grille-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 14px;
+}
+
+/* Champ avec une unité à droite (Ar) */
+.champ-suffixe {
+  position: relative;
+  margin-top: 6px;
+}
+
+.champ-suffixe input {
+  margin: 0;
+  padding-right: 42px;
+}
+
+.champ-suffixe > span {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gris);
+  pointer-events: none;
+}
+
+.indice {
+  display: block;
+  margin-top: 5px;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--gris);
+}
+
+.indice-plus {
+  color: #166534;
+  font-weight: 600;
+}
+
+.indice-moins {
+  color: var(--rouge);
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .grille-3,
+  .grille-champs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal,
+  .modal-fond {
+    animation: none;
+  }
 }

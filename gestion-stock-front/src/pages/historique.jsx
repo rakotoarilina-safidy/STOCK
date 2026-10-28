@@ -171,7 +171,10 @@ export default function Historique() {
                 <tr key={`${l.id_vente}-${i}`}>
                   <td>{dateHeureFr(l.date_vente)}</td>
                   <td>{l.numero_facture}</td>
-                  <td>{l.designation}</td>
+                  <td>
+                    {l.designation}
+                    {l.type_prix === 'GROS' && <span className="etiquette">gros</span>}
+                  </td>
                   <td className="nombre">{l.quantite_vendue}</td>
                   <td className="nombre">{montant(l.prix_unitaire_applique)}</td>
                   <td className="nombre">{montant(l.total_ligne)}</td>

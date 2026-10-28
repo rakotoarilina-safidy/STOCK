@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
 import { api, adresseServeur } from '../api.js';
 import { useAuth } from '../auth-context.js';
 import Modal from '../components/Modal.jsx';
@@ -199,8 +200,8 @@ function FormulaireUtilisateur({ utilisateur, estMoi, onFerme, onEnregistre }) {
       <label>
         Rôle
         <select value={form.role} onChange={maj('role')} disabled={estMoi}>
-          <option value="CAISSIER">Caissier — voit tout sauf les bénéfices</option>
-          <option value="RESPONSABLE">Responsable — voit aussi les bénéfices et gère les comptes</option>
+          <option value="CAISSIER">Caissier </option>
+          <option value="RESPONSABLE">Responsable </option>
         </select>
       </label>
       {estMoi && <p className="aide">Vous ne pouvez pas changer votre propre rôle.</p>}
@@ -682,27 +683,37 @@ function Reseau() {
 // ------------------------------------------------------------
 // Page
 // ------------------------------------------------------------
+const SECTIONS = {
+  compte: 'Mon compte',
+  utilisateurs: 'Utilisateurs',
+  sauvegardes: 'Sauvegardes',
+  reseau: 'Utiliser un deuxième PC',
+};
+
 export default function Parametres() {
   const { user } = useAuth();
+  const { section } = useParams();
+  const estResponsable = user.role === 'RESPONSABLE';
+
+  if (!SECTIONS[section] || (section !== 'compte' && !estResponsable)) {
+    return <Navigate to="/parametres/compte" replace />;
+  }
 
   return (
     <div>
       <div className="entete">
-        <h1>Paramètres</h1>
+        <h1>{SECTIONS[section]}</h1>
       </div>
 
-      <div className="deux-colonnes">
-        <FormulaireNom />
-        <FormulaireMonMotDePasse />
-      </div>
-
-      {user.role === 'RESPONSABLE' && (
-        <>
-          <Utilisateurs />
-          <Sauvegardes />
-          <Reseau />
-        </>
+      {section === 'compte' && (
+        <div className="deux-colonnes">
+          <FormulaireNom />
+          <FormulaireMonMotDePasse />
+        </div>
       )}
+      {section === 'utilisateurs' && <Utilisateurs />}
+      {section === 'sauvegardes' && <Sauvegardes />}
+      {section === 'reseau' && <Reseau />}
     </div>
   );
 }

@@ -44,7 +44,7 @@
 
 .article:hover:not(:disabled) {
   border-color: var(--bleu);
-  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.18);
 }
 
 .article:disabled {
@@ -298,4 +298,262 @@
     grid-template-columns: 1fr;
     height: auto;
   }
+}
+
+/* ---------- Caisse : mise à jour ---------- */
+.vente {
+  grid-template-columns: 1fr 410px;
+}
+
+.recherche-boite {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.recherche-boite > svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gris);
+  pointer-events: none;
+}
+
+.recherche-boite .recherche {
+  margin: 0;
+  padding-left: 44px;
+}
+
+.prix-doubles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-weight: 700;
+  color: var(--bleu);
+}
+
+.prix-doubles small {
+  display: inline-block;
+  width: 52px;
+  font-weight: 500;
+  font-size: 12.5px;
+  color: var(--gris);
+}
+
+.prix-doubles .gros {
+  color: var(--texte);
+  font-weight: 600;
+}
+
+.panier h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.compteur {
+  min-width: 24px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--safran);
+  color: var(--encre);
+  font-family: var(--police);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.icone-bouton {
+  display: grid;
+  place-items: center;
+  padding: 6px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--gris);
+  cursor: pointer;
+}
+
+.icone-bouton:hover {
+  background: var(--rouge-fond);
+  color: var(--rouge);
+}
+
+.chip-gros {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 5px 11px 5px 9px;
+  border: 1px solid #cbd8d4;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--gris);
+  cursor: pointer;
+  user-select: none;
+}
+
+.chip-gros input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--bleu);
+  cursor: pointer;
+}
+
+.chip-gros.actif {
+  border-color: var(--bleu);
+  background: #e3f1ee;
+  color: var(--bleu-fonce);
+}
+
+.chip-gros input:disabled {
+  cursor: not-allowed;
+}
+
+.ligne-prix {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--gris);
+}
+
+/* ---------- Catégories ---------- */
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.categorie-chip {
+  padding: 7px 16px;
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--gris);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.categorie-chip:hover {
+  border-color: var(--bleu);
+  color: var(--bleu-fonce);
+}
+
+.categorie-chip.actif {
+  border-color: var(--bleu);
+  background: var(--bleu);
+  color: #fff;
+}
+
+.prix-doubles .lot {
+  font-weight: 500;
+  font-size: 12.5px;
+  color: var(--gris);
+}
+
+/* ---------- Panier plus compact ---------- */
+.vente {
+  height: calc(100vh - 56px);
+}
+
+.panier {
+  max-height: 100%;
+}
+
+.panier-lignes {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.ligne {
+  padding: 7px 0;
+}
+
+.ligne-haut {
+  align-items: center;
+  gap: 8px;
+}
+
+.ligne-nom {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ligne-montant {
+  font-size: 14.5px;
+  white-space: nowrap;
+}
+
+.ligne-bas {
+  justify-content: flex-start;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.quantite button {
+  width: 27px;
+  height: 27px;
+}
+
+.quantite input {
+  width: 44px;
+  padding: 3px;
+  font-size: 14px;
+}
+
+.chip-gros {
+  padding: 3px 10px 3px 8px;
+  font-size: 13px;
+}
+
+.ligne-prix {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: 12.5px;
+  color: var(--gris);
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panier-total {
+  margin: 8px 0 6px;
+}
+
+.monnaie {
+  margin: 8px 0;
+  padding: 10px 12px;
+}
+
+/* ---------- Page « Vente enregistrée », au milieu de l'écran ---------- */
+.confirmation-centre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 56px);
+}
+
+.confirmation {
+  width: 100%;
+  max-width: 560px;
+  margin: 0;
+}
+
+.confirmation h1,
+.confirmation > p {
+  text-align: center;
+}
+
+.confirmation .actions {
+  justify-content: center;
 }

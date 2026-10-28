@@ -12,7 +12,7 @@
 }
 
 .btn-secondaire:hover:not(:disabled) {
-  background: #eff6ff;
+  background: #e6f2ef;
 }
 
 /* ---------- Ticket : invisible à l'écran ---------- */
@@ -92,4 +92,48 @@
   .ticket:last-child {
     break-after: auto;
   }
+}
+
+/* ---------- Mini tableau des produits ---------- */
+.t-table {
+  width: 100%;
+  margin: 2px 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 10px;
+}
+
+.t-table th,
+.t-table td {
+  padding: 2px 3px;
+  border: 1px solid #000;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.t-table th {
+  font-size: 9px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.t-table .t-col-q {
+  width: 52px;
+}
+
+.t-table .t-col-n {
+  width: 58px;
+}
+
+.t-table .t-col-m {
+  width: 62px;
+}
+
+.t-table td.t-col-q {
+  text-align: center;
+}
+
+.t-table td.t-col-n,
+.t-table td.t-col-m {
+  text-align: right;
 }

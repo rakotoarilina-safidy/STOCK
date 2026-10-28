@@ -1,34 +1,34 @@
 const express = require('express');
 const pool = require('../config/db');
 const { authentifier, autoriser } = require('../middleware/auth');
-const { bornes, arrondi } = require('../utils/periode');
+const { bornes } = require('../utils/periode');
 
 const router = express.Router();
-router.use(authentifier);
+// L'inventaire se fait uniquement côté responsable
+router.use(authentifier, autoriser('RESPONSABLE'));
 
-// Stock actuel de tous les articles, avec sa valeur
+// Inventaire du stock : tous les produits par ordre alphabétique, avec leur stock et leurs prix
 router.get('/stock', async (req, res) => {
   try {
     const [rows] = await pool.query(
       `SELECT id_article, designation, quantite_stock, seuil_alerte,
-              prix_achat, prix_vente_detail, prix_vente_gros,
-              (quantite_stock * prix_achat) AS valeur_achat,
-              (quantite_stock * prix_vente_detail) AS valeur_vente_detail
+              prix_achat, prix_vente_detail, prix_vente_gros
        FROM ARTICLES
        ORDER BY designation`
     );
+
     const articles = rows.map((r) => ({
       ...r,
-      en_alerte: r.quantite_stock <= r.seuil_alerte,
+      statut: r.quantite_stock <= 0 ? 'RUPTURE' : r.quantite_stock <= r.seuil_alerte ? 'BAS' : 'OK',
     }));
-    const totaux = {
-      nb_articles: articles.length,
-      valeur_achat: arrondi(articles.reduce((s, a) => s + Number(a.valeur_achat), 0)),
-      valeur_vente_detail: arrondi(
-        articles.reduce((s, a) => s + Number(a.valeur_vente_detail), 0)
-      ),
-    };
-    res.json({ totaux, articles });
+
+    res.json({
+      totaux: {
+        nb_articles: articles.length,
+        nb_a_reapprovisionner: articles.filter((a) => a.statut !== 'OK').length,
+      },
+      articles,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Erreur serveur' });
@@ -61,25 +61,39 @@ router.get('/mouvements', async (req, res) => {
                   FROM DETAILS_VENTES d JOIN VENTES v ON v.id_vente = d.id_vente
                   WHERE d.id_article = a.id_article
                     AND v.date_vente >= ?
-                    AND v.date_vente < DATE_ADD(?, INTERVAL 1 DAY)), 0) AS sorties
+                    AND v.date_vente < DATE_ADD(?, INTERVAL 1 DAY)), 0) AS sorties,
+        COALESCE((SELECT SUM(s.quantite_apres - s.quantite_avant)
+                  FROM AJUSTEMENTS_STOCK s
+                  WHERE s.id_article = a.id_article
+                    AND s.date_ajustement >= ?), 0) AS ajust_depuis_debut,
+        COALESCE((SELECT SUM(s.quantite_apres - s.quantite_avant)
+                  FROM AJUSTEMENTS_STOCK s
+                  WHERE s.id_article = a.id_article
+                    AND s.date_ajustement >= ?
+                    AND s.date_ajustement < DATE_ADD(?, INTERVAL 1 DAY)), 0) AS ajustements
        FROM ARTICLES a
        ORDER BY a.designation`,
-      [du, du, du, au, du, au]
+      [du, du, du, au, du, au, du, du, au]
     );
 
     const articles = rows.map((r) => {
       const stockActuel = Number(r.quantite_stock);
       const entrees = Number(r.entrees);
       const sorties = Number(r.sorties);
+      const ajustements = Number(r.ajustements);
       const stockDebut =
-        stockActuel - Number(r.achats_depuis_debut) + Number(r.ventes_depuis_debut);
+        stockActuel -
+        Number(r.achats_depuis_debut) +
+        Number(r.ventes_depuis_debut) -
+        Number(r.ajust_depuis_debut);
       return {
         id_article: r.id_article,
         designation: r.designation,
         stock_debut: stockDebut,
         entrees,
         sorties,
-        stock_fin: stockDebut + entrees - sorties,
+        ajustements,
+        stock_fin: stockDebut + entrees - sorties + ajustements,
         stock_actuel: stockActuel,
       };
     });

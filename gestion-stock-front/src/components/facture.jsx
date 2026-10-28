@@ -8,7 +8,7 @@ const nombre = (n) =>
     .format(Math.round(Number(n) || 0))
     .replace(/[\u202f\u00a0]/g, ' ');
 
-function Ticket({ facture, exemplaire }) {
+function Ticket({ facture }) {
   const date = new Date(facture.date_facture || facture.date_vente);
 
   return (
@@ -27,24 +27,29 @@ function Ticket({ facture, exemplaire }) {
         <span>Caissier</span>
         <span>{facture.caissier}</span>
       </div>
-      <div className="t-ligne">
-        <span>Vente</span>
-        <span>{facture.type_vente === 'GROS' ? 'Gros' : 'Détail'}</span>
-      </div>
 
       <div className="t-trait" />
 
-      {facture.lignes.map((l, i) => (
-        <div className="t-article" key={i}>
-          <div>{l.designation}</div>
-          <div className="t-ligne">
-            <span>
-              {l.quantite_vendue} x {nombre(l.prix_unitaire_applique)}
-            </span>
-            <span>{nombre(l.total_ligne)}</span>
-          </div>
-        </div>
-      ))}
+      <table className="t-table">
+        <thead>
+          <tr>
+            <th className="t-col-q">Quantité</th>
+            <th>Désignation</th>
+            <th className="t-col-n">PU</th>
+            <th className="t-col-m">Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          {facture.lignes.map((l, i) => (
+            <tr key={i}>
+              <td className="t-col-q">{l.quantite_vendue}</td>
+              <td>{l.designation}</td>
+              <td className="t-col-n">{nombre(l.prix_unitaire_applique)}</td>
+              <td className="t-col-m">{nombre(l.total_ligne)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <div className="t-trait" />
 
@@ -64,18 +69,17 @@ function Ticket({ facture, exemplaire }) {
       <div className="t-trait" />
 
       <div className="t-centre">Merci de votre visite !</div>
-      <div className="t-centre t-petit">— {exemplaire} —</div>
     </div>
   );
 }
 
 // Invisible à l'écran. Au moment d'imprimer, seule cette zone est imprimée :
-// deux tickets identiques, chacun sur sa page (client puis magasin).
+// deux tickets identiques, chacun sur sa page (un pour le client, un pour le magasin).
 export default function ZoneImpression({ facture }) {
   return createPortal(
     <div id="zone-impression">
-      <Ticket facture={facture} exemplaire="Exemplaire client" />
-      <Ticket facture={facture} exemplaire="Exemplaire magasin" />
+      <Ticket facture={facture} />
+      <Ticket facture={facture} />
     </div>,
     document.body
   );

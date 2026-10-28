@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../api.js';
 import { useAuth } from '../auth-context.js';
 import Histogramme from '../components/Histogramme.jsx';
+import CarteCaisse from '../components/CarteCaisse.jsx';
 import { montant } from '../format.js';
 import '../components/ui.css';
 
@@ -25,8 +26,9 @@ const jourCourt = (p) => `${p.slice(8, 10)}/${p.slice(5, 7)}`;
 
 export default function Accueil() {
   const { user } = useAuth();
-  // Le serveur n'envoie les bénéfices qu'à la responsable
-  const voirBenefice = user.role === 'RESPONSABLE';
+  const estResponsable = user.role === 'RESPONSABLE';
+  // Les bénéfices ne s'affichent pas ici : ils sont uniquement dans le Bilan financier
+  const voirBenefice = false;
 
   const [donnees, setDonnees] = useState(null);
   const [erreur, setErreur] = useState('');
@@ -48,15 +50,15 @@ export default function Accueil() {
 
   const series = voirBenefice
     ? [
-        { nom: 'Ventes', couleur: '#1d4ed8' },
-        { nom: 'Bénéfice', couleur: '#16a34a' },
+        { nom: 'Ventes', couleur: '#0f766e' },
+        { nom: 'Bénéfice', couleur: '#e8a317' },
       ]
-    : [{ nom: 'Ventes', couleur: '#1d4ed8' }];
+    : [{ nom: 'Ventes', couleur: '#0f766e' }];
 
   return (
     <div>
       <div className="entete">
-        <h1>Bonjour, {user.nom}</h1>
+        <h1>{estResponsable ? 'État financier du magasin' : `Bonjour, ${user.nom}`}</h1>
         <button className="btn btn-secondaire" onClick={() => setVersion((v) => v + 1)}>
           Actualiser
         </button>
@@ -73,6 +75,8 @@ export default function Accueil() {
             <CarteChiffres titre="Ce mois" d={donnees.ce_mois} voirBenefice={voirBenefice} />
             <CarteChiffres titre="Cette année" d={donnees.cette_annee} voirBenefice={voirBenefice} />
           </div>
+
+          {!estResponsable && <CarteCaisse />}
 
           <div className="carte section">
             <h2>Ventes des 10 derniers jours</h2>

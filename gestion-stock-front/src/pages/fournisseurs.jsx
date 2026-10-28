@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../api.js';
 import Modal from '../components/Modal.jsx';
 import Confirmation from '../components/Confirmation.jsx';
@@ -61,12 +62,25 @@ function FormulaireFournisseur({ fournisseur, onFerme, onEnregistre }) {
 // ------------------------------------------------------------
 // Formulaire de nouvelle livraison (approvisionnement)
 // ------------------------------------------------------------
-function FormulaireLivraison({ onFerme, onEnregistre }) {
+// livraison : si fournie, le formulaire modifie cette livraison au lieu d'en créer une
+function FormulaireLivraison({ livraison, onFerme, onEnregistre }) {
   const [fournisseurs, setFournisseurs] = useState([]);
   const [articles, setArticles] = useState([]);
-  const [idFournisseur, setIdFournisseur] = useState('');
-  const [date, setDate] = useState('');
-  const [lignes, setLignes] = useState([]);
+  const [idFournisseur, setIdFournisseur] = useState(() => {
+    if (!livraison) return '';
+    return livraison.nom_fournisseur.toLowerCase() === 'autres' ? 'AUTRES' : String(livraison.id_fournisseur);
+  });
+  const [date, setDate] = useState(livraison ? livraison.date_approvisionnement : '');
+  const [lignes, setLignes] = useState(() =>
+    livraison
+      ? livraison.lignes.map((l) => ({
+          id_article: l.id_article,
+          designation: l.designation,
+          quantite: String(l.quantite_achetee),
+          prix: String(l.prix_achat_unitaire),
+        }))
+      : []
+  );
   const [q, setQ] = useState('');
   const [erreur, setErreur] = useState('');
   const [envoi, setEnvoi] = useState(false);
@@ -140,10 +154,10 @@ function FormulaireLivraison({ onFerme, onEnregistre }) {
 
     setEnvoi(true);
     try {
-      const r = await api('/achats', {
-        method: 'POST',
+      const r = await api(livraison ? `/achats/${livraison.id_achat}` : '/achats', {
+        method: livraison ? 'PUT' : 'POST',
         body: {
-          id_fournisseur: Number(idFournisseur),
+          id_fournisseur: idFournisseur === 'AUTRES' ? 'AUTRES' : Number(idFournisseur),
           date_approvisionnement: date || undefined,
           lignes: lignes.map((l) => ({
             id_article: l.id_article,
@@ -166,11 +180,14 @@ function FormulaireLivraison({ onFerme, onEnregistre }) {
           Fournisseur
           <select value={idFournisseur} onChange={(e) => setIdFournisseur(e.target.value)}>
             <option value="">— Choisir —</option>
-            {fournisseurs.map((f) => (
-              <option key={f.id_fournisseur} value={f.id_fournisseur}>
-                {f.nom_fournisseur}
-              </option>
-            ))}
+            {fournisseurs
+              .filter((f) => f.nom_fournisseur.toLowerCase() !== 'autres')
+              .map((f) => (
+                <option key={f.id_fournisseur} value={f.id_fournisseur}>
+                  {f.nom_fournisseur}
+                </option>
+              ))}
+            <option value="AUTRES">Autres (fournisseur sans nom)</option>
           </select>
         </label>
         <label>
@@ -178,7 +195,7 @@ function FormulaireLivraison({ onFerme, onEnregistre }) {
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
         </label>
       </div>
-      <p className="aide">Sans date choisie, la livraison est enregistrée à la date d’aujourd’hui.</p>
+      <p className="aide">Sans date choisie, la livraison est enregistrée à la date d’aujourd’hui. Choisissez « Autres » pour un vendeur sans nom (petit fournisseur).</p>
 
       <div className="recherche-article">
         <input
@@ -277,7 +294,7 @@ function FormulaireLivraison({ onFerme, onEnregistre }) {
           Annuler
         </button>
         <button type="submit" className="btn" disabled={envoi}>
-          {envoi ? 'Enregistrement...' : 'Enregistrer la livraison'}
+          {envoi ? 'Enregistrement...' : livraison ? 'Enregistrer les modifications' : 'Enregistrer la livraison'}
         </button>
       </div>
     </form>
@@ -287,9 +304,12 @@ function FormulaireLivraison({ onFerme, onEnregistre }) {
 // ------------------------------------------------------------
 // Détail d'une livraison
 // ------------------------------------------------------------
-function DetailLivraison({ id, onFerme }) {
+function DetailLivraison({ id, onFerme, onChange }) {
   const [d, setD] = useState(null);
   const [erreur, setErreur] = useState('');
+  const [version, setVersion] = useState(0);
+  const [modification, setModification] = useState(false);
+  const [suppression, setSuppression] = useState(false);
 
   useEffect(() => {
     let actif = true;
@@ -299,9 +319,21 @@ function DetailLivraison({ id, onFerme }) {
     return () => {
       actif = false;
     };
-  }, [id]);
+  }, [id, version]);
 
   const total = d ? d.lignes.reduce((s, l) => s + Number(l.total_ligne), 0) : 0;
+
+  async function supprimer() {
+    setErreur('');
+    try {
+      await api(`/achats/${id}`, { method: 'DELETE' });
+      onChange();
+      onFerme();
+    } catch (e) {
+      setErreur(e.message);
+    }
+    setSuppression(false);
+  }
 
   return (
     <Modal titre={`Livraison n° ${id}`} onFerme={onFerme} large>
@@ -346,7 +378,42 @@ function DetailLivraison({ id, onFerme }) {
         <button className="btn btn-secondaire" onClick={onFerme}>
           Fermer
         </button>
+        {d && (
+          <>
+            <button className="btn btn-secondaire" onClick={() => setSuppression(true)}>
+              Supprimer
+            </button>
+            <button className="btn" onClick={() => setModification(true)}>
+              Modifier
+            </button>
+          </>
+        )}
       </div>
+
+      {modification && d && (
+        <Modal titre={`Modifier la livraison n° ${id}`} onFerme={() => setModification(false)} large>
+          <FormulaireLivraison
+            livraison={{ ...d, id_achat: id }}
+            onFerme={() => setModification(false)}
+            onEnregistre={() => {
+              setModification(false);
+              setVersion((v) => v + 1);
+              onChange();
+            }}
+          />
+        </Modal>
+      )}
+
+      {suppression && (
+        <Confirmation
+          titre="Supprimer la livraison"
+          message={`Voulez-vous vraiment supprimer la livraison n° ${id} ? Les quantités reçues seront retirées du stock.`}
+          confirmer="Supprimer"
+          danger
+          onConfirmer={supprimer}
+          onAnnuler={() => setSuppression(false)}
+        />
+      )}
     </Modal>
   );
 }
@@ -520,7 +587,7 @@ function construireRequete(periode, du, au, idFournisseur) {
   return p.toString();
 }
 
-function Livraisons({ version, fournisseurInitial }) {
+function Livraisons({ version, fournisseurInitial, onChange }) {
   const [periode, setPeriode] = useState('mois');
   const [du, setDu] = useState('');
   const [au, setAu] = useState('');
@@ -653,7 +720,7 @@ function Livraisons({ version, fournisseurInitial }) {
         </table>
       </div>
 
-      {detail && <DetailLivraison id={detail} onFerme={() => setDetail(null)} />}
+      {detail && <DetailLivraison id={detail} onFerme={() => setDetail(null)} onChange={onChange} />}
     </>
   );
 }
@@ -661,14 +728,16 @@ function Livraisons({ version, fournisseurInitial }) {
 // ------------------------------------------------------------
 // Page
 // ------------------------------------------------------------
-export default function Fournisseurs() {
-  const [onglet, setOnglet] = useState('fournisseurs');
+export default function Fournisseurs({ onglet }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [version, setVersion] = useState(0);
-  const [filtre, setFiltre] = useState('');
   const [livraison, setLivraison] = useState(false);
   const [message, setMessage] = useState('');
 
   const changer = () => setVersion((v) => v + 1);
+  // Fournisseur choisi depuis la liste (bouton « Livraisons » d'une ligne)
+  const filtre = location.state?.fournisseur ? String(location.state.fournisseur) : '';
 
   return (
     <div>
@@ -677,16 +746,13 @@ export default function Fournisseurs() {
         <div className="onglets">
           <button
             className={onglet === 'fournisseurs' ? 'actif' : ''}
-            onClick={() => setOnglet('fournisseurs')}
+            onClick={() => navigate('/fournisseurs')}
           >
             Fournisseurs
           </button>
           <button
             className={onglet === 'livraisons' ? 'actif' : ''}
-            onClick={() => {
-              setFiltre('');
-              setOnglet('livraisons');
-            }}
+            onClick={() => navigate('/fournisseurs/livraisons')}
           >
             Livraisons
           </button>
@@ -708,13 +774,12 @@ export default function Fournisseurs() {
         <ListeFournisseurs
           version={version}
           onChange={changer}
-          onVoirLivraisons={(id) => {
-            setFiltre(String(id));
-            setOnglet('livraisons');
-          }}
+          onVoirLivraisons={(id) =>
+            navigate('/fournisseurs/livraisons', { state: { fournisseur: id } })
+          }
         />
       ) : (
-        <Livraisons version={version} fournisseurInitial={filtre} />
+        <Livraisons key={filtre} version={version} fournisseurInitial={filtre} onChange={changer} />
       )}
 
       {livraison && (
